@@ -89,7 +89,7 @@ class VueTaroRouter {
     if (isBack) {
       if(!location.delta) location.delta = 1
       // 得到页面栈
-      const pageStack = getCurrentPages();
+      const pageStack = Taro.getCurrentPages();
       const _toIndex = pageStack.length - 1 - location.delta
       if(_toIndex<0) _toIndex = 0
       // 得到toPage
