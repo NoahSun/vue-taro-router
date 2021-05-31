@@ -11,8 +11,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:kaeryehaowan/vue-taro-router.git"
+    "url": "git@github.com:NoahSun/vue-taro-router.git"
   },
+  publishConfig:
   "keywords": [
     "taro",
     "router",
