@@ -1,6 +1,6 @@
 {
-  "name": "vue-taro-router",
-  "version": "1.0.3",
+  "name": "@noahsun/vue-taro-router",
+  "version": "1.0.4",
   "description": "基本 Taro ，扩展成 vue-router 的使用体验",
   "main": "dist/bundle.js",
   "files": [
@@ -13,7 +13,6 @@
     "type": "git",
     "url": "git@github.com:NoahSun/vue-taro-router.git"
   },
-  publishConfig:
   "keywords": [
     "taro",
     "router",
