@@ -4,14 +4,15 @@
 
 ### Installation
 ```js
-npm i @noahsun/vue-taro-router -S
+npm i @noahsun/taro-vue-router -S
+yarn add @noahsun/taro-vue-router
 ```
 
 ### Usage
 
 ```js
 // router.js
-import VueTaroRouter from "vue-taro-router";
+import VueTaroRouter from "@noahsun/taro-vue-router";
 const router = new VueTaroRouter();
 
 // 添加拦截器

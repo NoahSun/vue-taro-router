@@ -64,7 +64,7 @@ class VueTaroRouter {
         }
       });
     };
-    next();
+    (hooksCount > 0) && next();
   }
   // 并行执行 hook
   [RUN_SYNC_HOOKS](fns) {
@@ -72,7 +72,7 @@ class VueTaroRouter {
       fn(this[TO], this[FROM]);
     });
   }
-  [GOTO](location, type='navigateTo') {
+  [GOTO](location, type = 'navigateTo') {
     if (!isStr(location.path)) {
       throw new Error(
         `[@xsyx/taro-router-vue]: path should provide string but got ${location.path}`
@@ -85,13 +85,13 @@ class VueTaroRouter {
     // 更新from
     this[FROM] = this[CALC_FROM]();
     // 更新to
-    let toPath,_toQuery,_toPathQuery,toQuery;
+    let toPath, _toQuery, _toPathQuery, toQuery;
     if (isBack) {
-      if(!location.delta) location.delta = 1
+      if (!location.delta) location.delta = 1
       // 得到页面栈
       const pageStack = Taro.getCurrentPages();
       const _toIndex = pageStack.length - 1 - location.delta
-      if(_toIndex<0) _toIndex = 0
+      if (_toIndex < 0) _toIndex = 0
       // 得到toPage
       const _toPage = pageStack[_toIndex]
       toPath = _toPage.route
@@ -121,7 +121,7 @@ class VueTaroRouter {
             this[RUN_SYNC_HOOKS](this[AFTER_EACHS]);
             location.complete && location.complete();
           },
-          
+
         })
       );
     });
@@ -137,9 +137,8 @@ class VueTaroRouter {
     return {
       path: lastPage.route,
       query,
-      fullPath: `${lastPage.route}${
-        qs.stringify(query) ? "?" : ""
-      }${qs.stringify(query)}`
+      fullPath: `${lastPage.route}${qs.stringify(query) ? "?" : ""
+        }${qs.stringify(query)}`
     };
   }
 
@@ -170,7 +169,7 @@ class VueTaroRouter {
   }
 
   install(Vue) {
-    Object.defineProperty(Vue.prototype, '$router', {value: this})
+    Object.defineProperty(Vue.prototype, '$router', { value: this })
   }
 }
 
