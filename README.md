@@ -4,7 +4,7 @@
 
 ### Installation
 ```js
-npm i vue-taro-router -S
+npm i @noahsun/vue-taro-router -S
 ```
 
 ### Usage
