@@ -11,7 +11,7 @@ npm i @noahsun/vue-taro-router -S
 
 ```js
 // router.js
-import VueTaroRouter from "vue-taro-router";
+import VueTaroRouter from "@noahsun/vue-taro-router";
 const router = new VueTaroRouter();
 
 // 添加拦截器
