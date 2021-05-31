@@ -129,7 +129,7 @@ class VueTaroRouter {
   // 获取当前location
   [CALC_FROM]() {
     // 得到页面栈
-    const pageStack = getCurrentPages();
+    const pageStack = Taro.getCurrentPages();
     const lastPage = pageStack[pageStack.length - 1];
     if (!lastPage) return null;
     const query = lastPage.options;
