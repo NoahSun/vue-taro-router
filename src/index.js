@@ -28,7 +28,7 @@ class VueTaroRouter {
   beforeEach(fn) {
     if (!isFn(fn)) {
       throw new Error(
-        `[@xsyx/taro-router-vue]: beforeEach should provide function but got ${fn}`
+        `[@noahsun/taro-vue-router]: beforeEach should provide function but got ${fn}`
       );
     }
     this[BEFORE_EACHS].push(fn);
@@ -38,7 +38,7 @@ class VueTaroRouter {
   afterEach(fn) {
     if (!isFn(fn)) {
       throw new Error(
-        `[@xsyx/taro-router-vue]: afterEach should provide function but got ${fn}`
+        `[@noahsun/taro-vue-router]: afterEach should provide function but got ${fn}`
       );
     }
     this[AFTER_EACHS].push(fn);
@@ -49,22 +49,27 @@ class VueTaroRouter {
     const hooksCount = fns.length;
     let i = 0;
     const next = () => {
-      fns[i++](this[TO], this[FROM], location => {
-        if (location) {
-          // 如果在拦截器的next有参，则重新跳转
-          this[GOTO](location);
-        } else {
-          if (i < hooksCount) {
-            // 拦截器还未全部执行完
-            next();
+      if(hooksCount){
+        fns[i++](this[TO], this[FROM], location => {
+          if (location) {
+            // 如果在拦截器的next有参，则重新跳转
+            this[GOTO](location);
           } else {
-            // 拦截器执行完成
-            done();
+            if (i < hooksCount) {
+              // 拦截器还未全部执行完
+              next();
+            } else {
+              // 拦截器执行完成
+              done();
+            }
           }
-        }
-      });
+        });
+      } else {
+        // 拦截器执行完成
+        done();
+      }
     };
-    (hooksCount > 0) && next();
+    next();
   }
   // 并行执行 hook
   [RUN_SYNC_HOOKS](fns) {
@@ -72,16 +77,15 @@ class VueTaroRouter {
       fn(this[TO], this[FROM]);
     });
   }
-  [GOTO](location, type = 'navigateTo') {
-    if (!isStr(location.path)) {
+  [GOTO](location = {}, type = 'navigateTo') {
+    const isBack = type === "navigateBack";
+    
+    if (!isBack && !isStr(location.path)) {
       throw new Error(
-        `[@xsyx/taro-router-vue]: path should provide string but got ${location.path}`
+        `[@noahsun/taro-vue-router]: path should provide string but got ${location.path}`
       );
     }
-    const isBack = type === "navigateBack";
-    if (!isBack && !location.path) {
-      throw new Error(`[@xsyx/taro-router-vue]: path is not defined`);
-    }
+
     // 更新from
     this[FROM] = this[CALC_FROM]();
     // 更新to
@@ -90,7 +94,7 @@ class VueTaroRouter {
       if (!location.delta) location.delta = 1
       // 得到页面栈
       const pageStack = Taro.getCurrentPages();
-      const _toIndex = pageStack.length - 1 - location.delta
+      const _toIndex = pageStack.length - location.delta
       if (_toIndex < 0) _toIndex = 0
       // 得到toPage
       const _toPage = pageStack[_toIndex]
@@ -117,11 +121,10 @@ class VueTaroRouter {
     this[RUN_HOOKS](this[BEFORE_EACHS], () => {
       Taro[type](
         Object.assign({ url: this[TO].fullPath }, location, {
-          complete: () => {
+          complete: res => {
             this[RUN_SYNC_HOOKS](this[AFTER_EACHS]);
-            location.complete && location.complete();
-          },
-
+            location.complete && location.complete(res);
+          }
         })
       );
     });
