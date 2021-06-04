@@ -161,14 +161,8 @@ class VueTaroRouter {
     this[GOTO](location, "switchTab");
   }
 
-  get query() {
-    return this[CALC_FROM]().query
-  }
-  get path() {
-    return this[CALC_FROM]().path
-  }
-  get fullPath() {
-    return this[CALC_FROM]().fullPath
+  get currentRoute() {
+    return this[CALC_FROM]()
   }
 
   install(Vue) {

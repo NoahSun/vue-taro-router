@@ -1,13 +1,14 @@
 {
   "name": "@noahsun/taro-vue-router",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "基本 Taro ，扩展成 vue-router 的使用体验",
   "main": "dist/bundle.js",
   "files": [
     "dist/bundle.js"
   ],
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "publish": "npm publish . --access public"
   },
   "repository": {
     "type": "git",

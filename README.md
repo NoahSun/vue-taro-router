@@ -111,12 +111,12 @@ this.$router.afterEach(afterEach);
 
 ### 属性
 
-#### query、path、fullPath
+#### currentRoute, query、path、fullPath
 
 ```js
-this.$router.query;
-this.$router.path;
-this.$router.fullPath;
+this.$router.currentRoute.query;
+this.$router.currentRoute.path;
+this.$router.currentRoute.fullPath;
 
 // 或
 this.$route.query;
