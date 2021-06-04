@@ -136,11 +136,11 @@ class VueTaroRouter {
     const lastPage = pageStack[pageStack.length - 1];
     if (!lastPage) return null;
     const query = lastPage.options;
-    delete query.__key_;
+    delete query.$taroTimestamp;
     return {
-      path: lastPage.route,
       query,
-      fullPath: `${lastPage.route}${qs.stringify(query) ? "?" : ""
+      path: lastPage.path,
+      fullPath: `${lastPage.path}${qs.stringify(query) ? "?" : ""
         }${qs.stringify(query)}`
     };
   }
@@ -151,7 +151,7 @@ class VueTaroRouter {
   replace(location) {
     this[GOTO](location, "redirectTo");
   }
-  goBack(location) {
+  back(location) {
     this[GOTO](location, "navigateBack");
   }
   relaunch(location) {
@@ -173,6 +173,7 @@ class VueTaroRouter {
 
   install(Vue) {
     Object.defineProperty(Vue.prototype, '$router', { value: this })
+    Object.defineProperty(Vue.prototype, '$route', { value: this[CALC_FROM]() })
   }
 }
 

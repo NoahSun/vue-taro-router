@@ -3,6 +3,7 @@
 基本 Taro ，扩展成 vue-router 的使用体验
 
 ### Installation
+
 ```js
 npm i @noahsun/taro-vue-router -S
 yarn add @noahsun/taro-vue-router
@@ -58,10 +59,10 @@ this.$router.push({
   query: { id: "123" },
   events: {
     // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-    acceptDataFromOpenedPage: function(data) {
+    acceptDataFromOpenedPage: function (data) {
       console.log(data);
     },
-    someEvent: function(data) {
+    someEvent: function (data) {
       console.log(data);
     }
   },
@@ -72,7 +73,7 @@ this.$router.push({
     // 失败，执行这里
     console.log(err);
   },
-  success: function(res) {
+  success: function (res) {
     // 成功，执行这里
     // 通过eventChannel向被打开页面传送数据
     res.eventChannel.emit("acceptDataFromOpenerPage", { data: "test" });
@@ -85,7 +86,7 @@ this.$router.push({
 ```js
 this.$router.push(options);
 this.$router.replace(options);
-this.$router.goBack(options);
+this.$router.back(options);
 this.$router.relaunch(options);
 this.$router.switchTab(options);
 
@@ -100,7 +101,7 @@ this.$router.afterEach(afterEach);
 
 | 属性     | 类型     | 必填 | 描述                                                            |
 | -------- | -------- | ---- | --------------------------------------------------------------- |
-| path     | string   | 是   | 路径 （replace 方法可不传）                                     |
+| path     | string   | 是   | 路径 （replace、back 方法可不传）                               |
 | delta    | number   | 否   | 返回的页面数，如果 delta 大于现有页面数，则返回到首页。默认为 1 |
 | query    | object   | 否   | 查询参数                                                        |
 | events   | object   | 否   | 页面间通信接口，用于监听被打开页面发送到当前页面的数据          |
@@ -110,8 +111,15 @@ this.$router.afterEach(afterEach);
 
 ### 属性
 
+#### query、path、fullPath
+
 ```js
 this.$router.query;
 this.$router.path;
 this.$router.fullPath;
+
+// 或
+this.$route.query;
+this.$route.path;
+this.$route.fullPath;
 ```
