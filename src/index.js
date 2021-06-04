@@ -49,7 +49,7 @@ class VueTaroRouter {
     const hooksCount = fns.length;
     let i = 0;
     const next = () => {
-      if(hooksCount){
+      if (hooksCount) {
         fns[i++](this[TO], this[FROM], location => {
           if (location) {
             // 如果在拦截器的next有参，则重新跳转
@@ -79,8 +79,12 @@ class VueTaroRouter {
   }
   [GOTO](location = {}, type = 'navigateTo') {
     const isBack = type === "navigateBack";
-    
-    if (!isBack && !isStr(location.path)) {
+
+    if (isStr(location)) {
+      location = {
+        path: location
+      }
+    } else if (!isBack && !isStr(location.path)) {
       throw new Error(
         `[@noahsun/taro-vue-router]: path should provide string but got ${location.path}`
       );
@@ -98,16 +102,14 @@ class VueTaroRouter {
       if (_toIndex < 0) _toIndex = 0
       // 得到toPage
       const _toPage = pageStack[_toIndex]
-      toPath = _toPage.route
+      toPath = _toPage.path
       _toPathQuery = qs.stringify(_toPage.options)
     } else {
       toPath = location.path.split("?")[0];
-      _toPathQuery = location.path.split("?")[1]
-        ? location.path.split("?")[1]
-        : "";
+      _toPathQuery = location.path.split("?")[1] || "";
     }
     _toQuery = JSON.parse(
-      JSON.stringify(location.query ? location.query : {})
+      JSON.stringify(location.query || {})
     );
     toQuery = { ..._toQuery, ...qs.parse(_toPathQuery) };
     this[TO] = Object.assign({}, location, {

@@ -97,7 +97,17 @@ this.$router.beforeEach(beforeEach);
 this.$router.afterEach(afterEach);
 ```
 
-### options 路由跳转入参
+### options为字符串时
+
+```javascript
+this.$router.push('/path?a=1&b=2');
+this.$router.replace('/path?a=1&b=2');
+this.$router.back('/path?a=1&b=2');
+this.$router.relaunch('/path?a=1&b=2');
+this.$router.switchTab('/path?a=1&b=2');
+```
+
+### options为对象时路由跳转入参
 
 | 属性     | 类型     | 必填 | 描述                                                            |
 | -------- | -------- | ---- | --------------------------------------------------------------- |
