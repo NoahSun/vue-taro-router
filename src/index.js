@@ -6,12 +6,13 @@ import {
   FROM,
   RUN_HOOKS,
   CALC_FROM,
+  CALC_CURRENT_ROUTE,
   RUN_SYNC_HOOKS,
   TABBAR_LIST,
 } from "./constants";
 import { isFn, isStr } from "./utlis";
 import qs from "qs";
-import Taro from '@tarojs/taro';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 
 class VueTaroRouter {
   constructor({ beforeEachs = [], afterEachs = [], tabbarList = [] } = {}) {
@@ -147,6 +148,20 @@ class VueTaroRouter {
     };
   }
 
+  // 使用getCurrentInstance计算当前location
+  [CALC_CURRENT_ROUTE]() {
+    const route = getCurrentInstance().router;
+    const query = route.params;
+    const path = route.path;
+    delete query.$taroTimestamp;
+    return {
+      query,
+      path,
+      fullPath: `${path}${qs.stringify(query) ? "?" : ""
+        }${qs.stringify(query)}`
+    };
+  }
+
   push(location) {
     this[GOTO](location, "navigateTo");
   }
@@ -164,12 +179,24 @@ class VueTaroRouter {
   }
 
   get currentRoute() {
-    return this[CALC_FROM]()
+    return this[CALC_CURRENT_ROUTE]()
+  }
+
+  get query() {
+    return this[CALC_CURRENT_ROUTE]().query
+  }
+
+  get path() {
+    return this[CALC_CURRENT_ROUTE]().path
+  }
+
+  get fullPath() {
+    return this[CALC_CURRENT_ROUTE]().fullPath
   }
 
   install(Vue) {
     Object.defineProperty(Vue.prototype, '$router', { value: this })
-    Object.defineProperty(Vue.prototype, '$route', { value: this[CALC_FROM]() })
+    Object.defineProperty(Vue.prototype, '$route', { value: this })
   }
 }
 
