@@ -78,8 +78,12 @@ class VueTaroRouter {
       fn(this[TO], this[FROM]);
     });
   }
-  [GOTO](location = {}, type = 'navigateTo') {
+  [GOTO](location, type = 'navigateTo') {
     const isBack = type === "navigateBack";
+
+    if(!location){
+      location = {}
+    }
 
     if (isStr(location)) {
       location = {
@@ -152,13 +156,12 @@ class VueTaroRouter {
   [CALC_CURRENT_ROUTE]() {
     const route = getCurrentInstance().router;
     const query = route.params;
-    const path = route.path;
+    const path = route.path.split("?")[0] || "";
     delete query.$taroTimestamp;
     return {
       query,
       path,
-      fullPath: `${path}${qs.stringify(query) ? "?" : ""
-        }${qs.stringify(query)}`
+      fullPath: route.path
     };
   }
 
